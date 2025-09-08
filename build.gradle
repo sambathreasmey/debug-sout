@@ -1,0 +1,72 @@
+plugins {
+  id "java-library"
+  id "maven-publish"
+  id "signing"
+  id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
+}
+
+allprojects {
+  group = "io.github.sambath-reasmey"   // <-- change to yours
+  version = "1.0.0"                      // bump each release
+  repositories { mavenCentral() }
+}
+
+subprojects {
+  apply plugin: "java-library"
+  apply plugin: "maven-publish"
+  apply plugin: "signing"
+
+  java {
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+    withSourcesJar()
+    withJavadocJar()
+  }
+
+  publishing {
+    publications {
+      maven(MavenPublication) {
+        from components.java
+        pom {
+          name = project.name
+          description = "Development-time sout debugging for Spring Boot"
+          url = "https://github.com/sambathreasmey/debug-sout"
+          licenses {
+            license {
+              name = "Apache License 2.0"
+              url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+          }
+          scm {
+            url = "https://github.com/sambathreasmey/debug-sout"
+            connection = "scm:git:https://github.com/sambathreasmey/debug-sout.git"
+            developerConnection = "scm:git:https://github.com/sambathreasmey/debug-sout.git"
+          }
+          developers {
+            developer {
+              id = "sambathreasmey"
+              name = "Sambath Reasmey"
+              email = "reasmeysambath@gmail.com"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  signing {
+    def k = findProperty("SIGNING_KEY")
+    if (k) {
+      useInMemoryPgpKeys(findProperty("SIGNING_KEY"), findProperty("SIGNING_PASSWORD"))
+      sign publishing.publications.maven
+    }
+  }
+}
+
+nexusPublishing {
+  repositories {
+    sonatype {
+      username = System.getenv("MAVEN_CENTRAL_USERNAME")
+      password = System.getenv("MAVEN_CENTRAL_PASSWORD")
+    }
+  }
+}

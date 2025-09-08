@@ -1,0 +1,23 @@
+
+**`LICENSE`** → Apache-2.0 text.
+
+---
+
+# 6) Sonatype Central (Maven Central) setup
+
+1. Create/Log in to **Sonatype Central Portal**.
+2. **Claim namespace** `io.github.<your_github_username>` (connect your GitHub repo to verify).
+3. Generate **publishing tokens**:
+   - `MAVEN_CENTRAL_USERNAME`
+   - `MAVEN_CENTRAL_PASSWORD`
+
+---
+
+# 7) GPG signing (required by Central)
+
+- Create key:
+  ```bash
+  gpg --full-generate-key
+  gpg --list-secret-keys --keyid-format=long
+  gpg --armor --export-secret-keys <KEY_ID> > private.key
+  base64 private.key > private.key.b64
