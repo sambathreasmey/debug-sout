@@ -9,4 +9,4 @@ dependencies {
   implementation "io.github.sambathreasmey:debug-sout-starter:1.0.0"
 }
 
-# CR0001
+# CR0001 for developer 1
