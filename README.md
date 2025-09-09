@@ -8,3 +8,5 @@ dependencies {
   implementation "io.github.sambathreasmey:debug-sout-annotations:1.0.0"
   implementation "io.github.sambathreasmey:debug-sout-starter:1.0.0"
 }
+
+# CR0001
